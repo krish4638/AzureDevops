@@ -9,6 +9,8 @@ RUN dotnet restore
 COPY . ./
 RUN dotnet publish -c Release -o out
 
+EXPOSE 5000
+
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:3.1
 WORKDIR /app
