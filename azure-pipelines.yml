@@ -31,7 +31,6 @@ stages:
         PathtoPublish: '$(build.artifactstagingdirectory)'
         artifactName: '${{parameters.appName}}-$(aiv)[linux-x64]'
         
-stages:
 - stage: buildShell
   jobs: 
   - job: build_shell
