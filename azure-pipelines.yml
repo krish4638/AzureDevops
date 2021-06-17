@@ -43,11 +43,11 @@ stages:
     - task: eliostruyf.build-task.custom-build-task.file-creator@6
       displayName: 'File Creator'
       inputs:
-        filepath: '$(Build.ArtifactStagingDirectory)/acrconnect-installer-cli-$(aiv)[linux-x64].sh'
+        filepath: '$(Build.ArtifactStagingDirectory)/acrconnect-installer-cli-$(someName)[linux-x64].sh'
         filecontent: |
          #!/bin/bash
          DOWNLOAD_HOST=c3.acr.org/acr-c3
-         `curl -fL -g https://$DOWNLOAD_HOST/downloads/acrconnect-installer-cli-$(aiv)[linux-x64].zip -o acrconnect-installer-cli.zip --insecure`
+         `curl -fL -g https://$DOWNLOAD_HOST/downloads/acrconnect-installer-cli-$(someName)[linux-x64].zip -o acrconnect-installer-cli.zip --insecure`
         fileoverwrite: true
         
     - task: PublishBuildArtifacts@1
