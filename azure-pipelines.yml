@@ -2,6 +2,7 @@ trigger:
 - master
 
 extends:
-- template: publishzip.yaml
-- template: publish-shell.yaml
+  template: 
+    - template: publishzip.yaml
+    - template: publish-shell.yaml
 
