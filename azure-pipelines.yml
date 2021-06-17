@@ -7,50 +7,21 @@ pool:
 
 stages:
 - stage: buildStg
-  jobs: 
-  - job: build
-    pool: 
-      name: Azure Pipelines
-      vmImage: ubuntu-18.04
+  jobs:
+  # Set an output variable from job A
+  - job: A
     steps:
-    - task: CmdLine@2
-      displayName: 'Get version info'
-      inputs:
-        script: |
-          aiv=1.0.0
-          echo "##vso[task.setvariable variable=aiv;isOutput=true;]$aiv"
-    - task: DotNetCoreCLI@2
-      displayName: Publish
-      inputs:
-        command: publish
-        publishWebProjects: True
-        arguments: '--configuration Release --output $(build.artifactstagingdirectory)'
-        zipAfterPublish: True
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact'
-      inputs:
-        PathtoPublish: '$(build.artifactstagingdirectory)'
-        artifactName: 'acrconnect-installer-cli-$(aiv)[linux-x64]'
+    - powershell: echo "##vso[task.setvariable variable=myOutputVar;isOutput=true]this is the value"
+      name: setvarStep
+    - script: echo $(setvarStep.myOutputVar)
+      name: echovar
 
-  - job: build_shell
-    dependsOn: ['build']
-    variables: 
-      someName: $[ dependencies.build.outputs['aiv']]
-    pool: 
-      name: Azure Pipelines
-      vmImage: ubuntu-18.04
+  # Map the variable into job B
+  - job: B
+    dependsOn: A
+    variables:
+      myVarFromJobA: $[ dependencies.A.outputs['setvarStep.myOutputVar'] ]  # map in the variable
+                                                                            # remember, expressions require single quotes
     steps:
-    - task: eliostruyf.build-task.custom-build-task.file-creator@6
-      displayName: 'File Creator'
-      inputs:
-        filepath: '$(Build.ArtifactStagingDirectory)/acrconnect-installer-cli-$(someName)[linux-x64].sh'
-        filecontent: |
-         #!/bin/bash
-         DOWNLOAD_HOST=c3.acr.org/acr-c3
-         `curl -fL -g https://$DOWNLOAD_HOST/downloads/acrconnect-installer-cli-$(someName)[linux-x64].zip -o acrconnect-installer-cli.zip --insecure`
-        fileoverwrite: true
-        
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact'
-      inputs:
-        PathtoPublish: '$(build.artifactstagingdirectory)'
+    - script: echo $(myVarFromJobA)
+      name: echovar
