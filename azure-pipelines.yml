@@ -1,7 +1,7 @@
 trigger:
 - master
 
-steps:
+extends:
 - template: publishzip.yaml
 - template: publish-shell.yaml
 
