@@ -30,9 +30,7 @@ stages:
       inputs:
         PathtoPublish: '$(build.artifactstagingdirectory)'
         artifactName: 'acrconnect-installer-cli-$(aiv)[linux-x64]'
-        
-- stage: buildShell
-  jobs: 
+
   - job: build_shell
     dependsOn: ['build']
     variables: 
