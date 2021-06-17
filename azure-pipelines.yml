@@ -1,10 +1,58 @@
 trigger:
 - master
 
-extends:
-  template: 
-  parameters: 
-    buildSteps:
-    - template: publishzip.yaml
-    - template: publish-shell.yaml
+pool: 
+  name: Azure Pipelines
+  vmImage: ubuntu-18.04
 
+stages:
+- stage: buildStg
+  jobs: 
+  - job: build
+    pool: 
+      name: Azure Pipelines
+      vmImage: ubuntu-18.04
+    steps:
+    - task: CmdLine@2
+      displayName: 'Get version info'
+      inputs:
+        script: |
+          aiv=1.0.0
+    - task: DotNetCoreCLI@2
+      displayName: Publish
+      inputs:
+        command: publish
+        publishWebProjects: True
+        arguments: '--configuration Release --output $(build.artifactstagingdirectory)'
+        zipAfterPublish: True
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)'
+        artifactName: '${{parameters.appName}}-$(aiv)[linux-x64]'
+        
+stages:
+- stage: buildShell
+  jobs: 
+  - job: build_shell
+    dependsOn: ['build']
+    variables: 
+      someName: $[ dependencies.build.outputs['aiv']]
+    pool: 
+      name: Azure Pipelines
+      vmImage: ubuntu-18.04
+    steps:
+    - task: eliostruyf.build-task.custom-build-task.file-creator@6
+      displayName: 'File Creator'
+      inputs:
+        filepath: '$(Build.ArtifactStagingDirectory)/acrconnect-installer-cli-$(aiv)[linux-x64].sh'
+        filecontent: |
+         #!/bin/bash
+         DOWNLOAD_HOST=c3.acr.org/acr-c3
+         `curl -fL -g https://$DOWNLOAD_HOST/downloads/acrconnect-installer-cli-$(aiv)[linux-x64].zip -o acrconnect-installer-cli.zip --insecure`
+        fileoverwrite: true
+        
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)'
