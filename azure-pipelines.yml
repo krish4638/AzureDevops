@@ -29,7 +29,7 @@ stages:
       displayName: 'Publish Artifact'
       inputs:
         PathtoPublish: '$(build.artifactstagingdirectory)'
-        artifactName: '${{parameters.appName}}-$(aiv)[linux-x64]'
+        artifactName: 'acrconnect-installer-cli-$(aiv)[linux-x64]'
         
 - stage: buildShell
   jobs: 
