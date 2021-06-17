@@ -1,17 +1,54 @@
-# ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
 trigger:
 - master
 
 pool:
-  vmImage: ubuntu-latest
-
-variables:
-  buildConfiguration: 'Release'
+  name: Azure Pipelines
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: Publish
+  inputs:
+    command: publish
+    publishWebProjects: True
+    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+    zipAfterPublish: True
+
+- task: eliostruyf.build-task.custom-build-task.file-creator@6
+  displayName: 'File Creator'
+  inputs:
+    filepath: '$(Build.ArtifactStagingDirectory)/acrconnect-installer-cli-$(Build.BuildNumber)[linux-x64].sh'
+    filecontent: |
+     #!/bin/bash
+     
+     if [ -z $1 ]
+     then
+       DOWNLOAD_HOST=c3.acr.org/acr-c3
+     else
+       DOWNLOAD_HOST=$1
+     fi
+     
+     `curl -fL -g https://$DOWNLOAD_HOST/downloads/acrconnect-installer-cli-$(Build.BuildNumber)[linux-x64].zip -o acrconnect-installer-cli.zip --insecure`
+     
+     unzip -q -o acrconnect-installer-cli.zip -d /usr/local/bin/acrconnect-installer-cli
+     
+     rm acrconnect-installer-cli.zip
+     
+     echo '#!/bin/sh
+     exec /usr/local/bin/acrconnect-installer-cli/AcrConnect.Installer.Cli [acrconnect-installer] $@' > /usr/local/bin/acrconnect-installer
+     
+     chmod +x /usr/local/bin/acrconnect-installer
+     
+     chmod 777 /usr/local/bin/acrconnect-installer-cli/.
+     
+     chmod 764 /usr/local/bin/acrconnect-installer-cli/AcrConnect.Installer.Cli
+     
+     echo "Start the installer by running 'sudo acrconnect-installer install' or run 'sudo acrconnect-installer --help' for other commands"
+    fileoverwrite: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+  condition: succeededOrFailed()
+
