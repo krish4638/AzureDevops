@@ -8,14 +8,18 @@ stages:
     pool:
       vmImage: 'ubuntu-18.04'
     steps:
-    - script: |
-        div=1.0.0.0
-        echo "##vso[task.setvariable variable=div;isOutput=true]$div"
-    - script: echo $(div)
+    - task: CmdLine@2
+      displayName: 'Get version info'
+      inputs:
+        script: |
+          div=1.0.0.0
+          echo "##vso[task.setvariable variable=div;isOutput=true]$div"
+        name: test 
+    - script: echo $(test.div)
       
   - job: build_2
     dependsOn: build
     variables:
-      aiv: $[ dependencies.build.outputs['div'] ]
+      div: $[ dependencies.build.outputs['test.div'] ]
     steps:
-    - script: echo "aiv=$(aiv)"
+    - script: echo "div=$(div)"
