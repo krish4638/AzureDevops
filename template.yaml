@@ -23,7 +23,7 @@ stages:
         echo $(aiv)
         test=$(aiv)
         echo "##vso[task.setvariable variable=test;isOutput=true]$test"
-        echo ($test)
+        echo $(test)
       name: test
         
     - task: PublishBuildArtifacts@1
