@@ -14,16 +14,8 @@ stages:
         script: |
           div=1.0.0.0
           echo "##vso[task.setvariable variable=div;]$div"
-        name: test 
     - task: CmdLine@2
-      displayName: 'Get version info'
+      displayName: 'Get'
       inputs:
         script: |
-          echo $(test.div)
-      
-  - job: build_2
-    dependsOn: build
-    variables:
-      div: $[ dependencies.build.outputs['test.div'] ]
-    steps:
-    - script: echo "div=$(div)"
+          echo $(div)
