@@ -16,8 +16,6 @@ stages:
       
   - job: build_2
     dependsOn: build
-    pool:
-      vmImage: 'ubuntu-18.04'
     variables:
       aiv: $[ dependencies.build.outputs['test.div'] ]
     steps:
