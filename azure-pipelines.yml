@@ -4,16 +4,12 @@ trigger:
 stages:
   - template: template.yaml
   - stage: createShell
+     dependsOn: BuildStg
     jobs:
     - job: 
       variables:
-        div: $[ dependencies.BuildStg.outputs['div'] ]
+        div: $[ dependencies.BuildStg.build.outputs['DetermineResult.div'] ]
       steps:
-      - task: eliostruyf.build-task.custom-build-task.file-creator@6
-        displayName: 'File Creator'
-        inputs:
-          filepath: '$(Build.ArtifactStagingDirectory)/acrconnect-installer-cli-$(div)[linux-x64].sh'
-          filecontent: |
-            echo $(div)
-
-          fileoverwrite: true
+      - bash: |
+          echo "aiv=$(aiv)"
+          echo "div=$(div)"
