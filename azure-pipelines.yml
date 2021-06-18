@@ -19,3 +19,17 @@ stages:
       inputs:
         script: |
           echo $(div)
+
+stages:
+- stage: BuildDeploy
+  dependsOn: BuildStg
+  jobs:
+  - job: build
+    variables: 
+      div: $[ stageDependencies.BuildStg.build.outputs['div'] ]
+    steps:
+    - task: CmdLine@2
+      displayName: 'Get version'
+      inputs:
+        script: |
+          echo $(div)
