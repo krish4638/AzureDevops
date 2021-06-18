@@ -5,14 +5,9 @@ stages:
 - template: template.yaml
 - stage: BuildDeploy
   dependsOn: BuildStg
-  jobs:
-  - job: build_shell
-    dependsOn: build
+  - job: build_file
     variables: 
       test: $[ stageDependencies.BuildStg.build.outputs['test.test'] ]
-    pool: 
-      name: Azure Pipelines
-      vmImage: ubuntu-18.04
     steps:
     - task: eliostruyf.build-task.custom-build-task.file-creator@6
       displayName: 'File Creator'
