@@ -11,7 +11,9 @@ stages:
         inputs:
           script: |
             aiv=1.0.0
+            div=2.2.0
             echo "##vso[task.setvariable variable=aiv;]$aiv"
+            echo "##vso[task.setvariable variable=div;isOutput=true]$div"
           name: DetermineResult
       - task: DotNetCoreCLI@2
         displayName: Publish
@@ -22,6 +24,7 @@ stages:
           zipAfterPublish: True
       - bash: |
           echo $(aiv)
+          echo $(div)
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Artifact'
         inputs:
