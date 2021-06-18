@@ -12,13 +12,13 @@ stages:
         div=1.0.0.0
         echo "##vso[task.setvariable variable=div;isOutput=true]$div"
       name: test
-    - script: echo $(test.aiv)
+    - script: echo $(test.div)
       
   - job: build_2
     dependsOn: build
     pool:
       vmImage: 'ubuntu-18.04'
     variables:
-      aiv: $[ dependencies.build.outputs['test.aiv'] ]
+      aiv: $[ dependencies.build.outputs['test.div'] ]
     steps:
     - script: echo "aiv=$(aiv)"
