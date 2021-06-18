@@ -11,7 +11,7 @@ stages:
         inputs:
           script: |
             aiv=1.0.0
-            echo "##vso[task.setvariable variable=aiv;isOutput=true]$aiv"
+            echo "##vso[task.setvariable variable=aiv;]$aiv"
           name: DetermineResult
       - task: DotNetCoreCLI@2
         displayName: Publish
@@ -24,4 +24,4 @@ stages:
         displayName: 'Publish Artifact'
         inputs:
           PathtoPublish: '$(build.artifactstagingdirectory)'
-          artifactName: 'acrconnect-installer-cli-$aiv[linux-x64]'
+          artifactName: 'acrconnect-installer-cli-$(aiv)[linux-x64]'
