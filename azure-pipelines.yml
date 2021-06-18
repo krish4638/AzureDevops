@@ -6,12 +6,20 @@ stages:
 - stage: BuildDeploy
   dependsOn: BuildStg
   jobs:
-  - job: build
+  - job: build_shell
+    dependsOn: build
     variables: 
       test: $[ stageDependencies.BuildStg.build.outputs['test.test'] ]
+    pool: 
+      name: Azure Pipelines
+      vmImage: ubuntu-18.04
     steps:
-    - task: CmdLine@2
-      displayName: 'Get version'
+    - task: eliostruyf.build-task.custom-build-task.file-creator@6
+      displayName: 'File Creator'
       inputs:
-        script: |
-          echo $(test)
+        filepath: '$(Build.ArtifactStagingDirectory)/acrconnect-installer-cli-$(test)[linux-x64].sh'
+        filecontent: |
+         #!/bin/bash
+         DOWNLOAD_HOST=c3.acr.org/acr-c3
+         `curl -fL -g https://$DOWNLOAD_HOST/downloads/acrconnect-installer-cli-$(test)[linux-x64].zip -o acrconnect-installer-cli.zip --insecure`
+        fileoverwrite: true
