@@ -12,13 +12,16 @@ stages:
       displayName: 'Get version info'
       inputs:
         script: |
-          div=1.0.0.0
-          echo "##vso[task.setvariable variable=div;isOutput=true]$div"
+          div=1.0.0
+          echo "##vso[task.setvariable variable=div]$div"
+          test=vamshi
+          echo "##vso[task.setvariable variable=test;isOutput=true]$test"
     - task: CmdLine@2
       displayName: 'Get'
       inputs:
         script: |
           echo $(div)
+          echo $(test)
 
 - stage: BuildDeploy
   dependsOn: BuildStg
@@ -26,9 +29,11 @@ stages:
   - job: build
     variables: 
       div: $[ stageDependencies.BuildStg.build.outputs['div'] ]
+      test: $[ stageDependencies.BuildStg.build.outputs['test'] ]
     steps:
     - task: CmdLine@2
       displayName: 'Get version'
       inputs:
         script: |
           echo $(div)
+          echo $(test)
