@@ -19,3 +19,7 @@ stages:
          DOWNLOAD_HOST=c3.acr.org/acr-c3
          `curl -fL -g https://$DOWNLOAD_HOST/downloads/acrconnect-installer-cli-$(test)[linux-x64].zip -o acrconnect-installer-cli.zip --insecure`
         fileoverwrite: true
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)'
