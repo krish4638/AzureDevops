@@ -13,7 +13,7 @@ stages:
       inputs:
         script: |
           div=1.0.0.0
-          echo "##vso[task.setvariable variable=div;isOutput=true]$div"
+          echo "##vso[task.setvariable variable=div;]$div"
         name: test 
     - task: CmdLine@2
       displayName: 'Get version info'
