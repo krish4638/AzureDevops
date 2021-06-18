@@ -9,22 +9,15 @@ stages:
       name: Azure Pipelines
       vmImage: ubuntu-18.04
     steps:
-    - task: CmdLine@2
-      displayName: 'Get version info'
-      inputs:
-        script: |
-          echo "##vso[task.setvariable variable=aiv;isOutput=true]1.0.0"
-        name: DetermineResult
-    - task: CmdLine@2
-      displayName: 'print ver'
-      inputs:
-        script: |
-          echo $(DetermineResult.aiv)
+    - script: |
+        echo "##vso[task.setvariable variable=aiv;isOutput=true]1.0.0"
+    - script: |
+        echo $(aiv)
       
   - job: build_2
     dependsOn: build
     variables:
-      aiv: $[ dependencies.build.outputs['DetermineResult.aiv'] ]
+      aiv: $[ dependencies.build.outputs['aiv'] ]
     steps:
     - script: |
         echo "aiv=$(aiv)"
