@@ -21,7 +21,7 @@ stages:
     - job: build_2
       dependsOn: build
       variables:
-        aiv=$[ dependencies.build.outputs['DetermineResult.aiv'] ]
+        aiv: $[ dependencies.build.outputs['DetermineResult.aiv'] ]
       steps:
       - script: |
           echo "aiv=$(aiv)"
@@ -31,7 +31,7 @@ stages:
   jobs:
   - job: deploy
     variables:
-      aiv=$[ stageDependencies.BuildStg.build.outputs['DetermineResult.aiv'] ]
+      aiv: $[ stageDependencies.BuildStg.build.outputs['DetermineResult.aiv'] ]
     steps:
     - script: |
         echo "aiv=$(aiv)"
