@@ -21,7 +21,7 @@ stages:
           arguments: '--configuration Release --output $(build.artifactstagingdirectory)'
           zipAfterPublish: True
       - bash: |
-          echo "$(aiv)"
+          echo $(aiv)
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Artifact'
         inputs:
