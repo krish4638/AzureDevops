@@ -32,5 +32,6 @@ stages:
   - job: deploy
     variables:
       aiv=$[ dependencies.BuildStg.build.outputs['DetermineResult.aiv']]
+    steps:
     - script: |
         echo "aiv=$(aiv)"
