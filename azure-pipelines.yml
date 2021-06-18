@@ -1,29 +1,5 @@
 trigger:
 - master
 
-pool: 
-  name: Azure Pipelines
-  vmImage: ubuntu-18.04
-
-stages:
-- stage: A
-  jobs:
-  - job: JA
-    steps:
-    - script: |
-        echo "This is job Foo."
-        echo "##vso[task.setvariable variable=doThing;isOutput=true]Thsi is just testing" 
-      name: DetermineResult
-    - script: echo $(DetermineResult.doThing)
-      name: echovar
-
-#stage B runs if DetermineResult task set doThing variable n stage A
-- stage: B
-  dependsOn: A
-  jobs:
-  - job: JB
-    variables:
-      varFromStageA: $[ stageDependencies.A.JA.outputs['DetermineResult.doThing'] ]
-    steps:
-    - bash: echo "Hello world stage B first job"
-    - script: echo $(varFromStageA)
+extends :
+  template : template.yaml
