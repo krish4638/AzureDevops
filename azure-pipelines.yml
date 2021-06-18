@@ -16,24 +16,21 @@ stages:
           echo "##vso[task.setvariable variable=div]$div"
           test=vamshi
           echo "##vso[task.setvariable variable=test;isOutput=true]$test"
-    - task: CmdLine@2
-      displayName: 'Get'
-      inputs:
-        script: |
-          echo $(div)
-          echo $(test)
+    - bash: |
+        echo $(div)
+        test=$(div)
+        echo "##vso[task.setvariable variable=test;isOutput=true]$test"
+      name: test
 
 - stage: BuildDeploy
   dependsOn: BuildStg
   jobs:
   - job: build
     variables: 
-      div: $[ stageDependencies.BuildStg.build.outputs['div'] ]
-      test: $[ stageDependencies.BuildStg.build.outputs['test'] ]
+      test: $[ stageDependencies.BuildStg.build.outputs['test.test'] ]
     steps:
     - task: CmdLine@2
       displayName: 'Get version'
       inputs:
         script: |
-          echo $(div)
           echo $(test)
