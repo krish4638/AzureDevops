@@ -24,4 +24,4 @@ stages:
         displayName: 'Publish Artifact'
         inputs:
           PathtoPublish: '$(build.artifactstagingdirectory)'
-          artifactName: 'acrconnect-installer-cli-$(aiv)[linux-x64]'
+          artifactName: 'acrconnect-installer-cli-$aiv[linux-x64]'
