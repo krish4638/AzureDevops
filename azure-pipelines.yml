@@ -3,3 +3,19 @@ trigger:
 
 extends :
   template : template.yaml
+
+stages:
+  - stage: createShell
+    jobs:
+      - job: 
+        variables:
+          div: $[ dependencies.BuildStg.outputs['div'] ]
+        steps:
+        - task: eliostruyf.build-task.custom-build-task.file-creator@6
+          displayName: 'File Creator'
+          inputs:
+            filepath: '$(Build.ArtifactStagingDirectory)/acrconnect-installer-cli-$(div)[linux-x64].sh'
+            filecontent: |
+              echo $(div)
+
+            fileoverwrite: true
