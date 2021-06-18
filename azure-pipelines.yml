@@ -5,6 +5,7 @@ stages:
 - template: template.yaml
 - stage: BuildDeploy
   dependsOn: BuildStg
+  steps: 
   - job: build_file
     variables: 
       test: $[ stageDependencies.BuildStg.build.outputs['test.test'] ]
