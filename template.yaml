@@ -20,11 +20,11 @@ stages:
           publishWebProjects: True
           arguments: '--configuration Release --output $(build.artifactstagingdirectory)'
           zipAfterPublish: True
+      - bash: |
+          aiv = $['aiv']
+          echo $aiv
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Artifact'
         inputs:
-          scripts: |
-            aiv = $['aiv']
-            echo $aiv
           PathtoPublish: '$(build.artifactstagingdirectory)'
           artifactName: 'acrconnect-installer-cli-$(aiv)[linux-x64]'
