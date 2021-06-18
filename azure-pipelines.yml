@@ -13,11 +13,13 @@ stages:
       displayName: 'Get version info'
       inputs:
         script: |
-          aiv=1.0.0
-          echo "##vso[task.setvariable variable=aiv;isOutput=true]$aiv"
+          echo "##vso[task.setvariable variable=aiv;isOutput=true]1.0.0"
         name: DetermineResult
-    - script: echo $(DetermineResult.aiv)
-      name: echovar
+    - task: CmdLine@2
+      displayName: 'print ver'
+      inputs:
+        script: |
+          echo $(DetermineResult.aiv)
       
   - job: build_2
     dependsOn: build
