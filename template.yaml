@@ -22,9 +22,8 @@ stages:
           zipAfterPublish: True
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Artifact'
-        dependsOn: DetermineResult
         variables: 
-          aiv: $[ dependencies.DetermineResult.outputs['aiv'] ]
+          aiv: $[ ['aiv'] ]
         inputs:
           PathtoPublish: '$(build.artifactstagingdirectory)'
           artifactName: 'acrconnect-installer-cli-$(aiv)[linux-x64]'
