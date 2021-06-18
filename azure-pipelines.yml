@@ -16,8 +16,6 @@ stages:
       
   - job: build_2
     dependsOn: build
-    pool:
-      vmImage: 'vs2017-win2016'
     variables:
       aiv: $[ dependencies.build.outputs['test.aiv'] ]
     steps:
