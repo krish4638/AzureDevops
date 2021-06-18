@@ -1,0 +1,27 @@
+stages:
+- stage: BuildStg
+  jobs:
+    - job: build
+      pool: 
+        name: Azure Pipelines
+        vmImage: ubuntu-18.04
+      steps:
+      - task: CmdLine@2
+        displayName: 'Get version info'
+        inputs:
+          script: |
+            aiv=1.0.0
+            echo "##vso[task.setvariable variable=aiv;isOutput=true]$aiv"
+          name: DetermineResult
+      - task: DotNetCoreCLI@2
+        displayName: Publish
+        inputs:
+          command: publish
+          publishWebProjects: True
+          arguments: '--configuration Release --output $(build.artifactstagingdirectory)'
+          zipAfterPublish: True
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact'
+        inputs:
+          PathtoPublish: '$(build.artifactstagingdirectory)'
+          artifactName: 'acrconnect-installer-cli-$(aiv)[linux-x64]'
