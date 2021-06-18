@@ -1,21 +1,19 @@
 trigger:
 - master
 
-extends :
-  template : template.yaml
-
 stages:
+  - template: template.yaml
   - stage: createShell
     jobs:
-      - job: 
-        variables:
-          div: $[ dependencies.BuildStg.outputs['div'] ]
-        steps:
-        - task: eliostruyf.build-task.custom-build-task.file-creator@6
-          displayName: 'File Creator'
-          inputs:
-            filepath: '$(Build.ArtifactStagingDirectory)/acrconnect-installer-cli-$(div)[linux-x64].sh'
-            filecontent: |
-              echo $(div)
+    - job: 
+      variables:
+        div: $[ dependencies.BuildStg.outputs['div'] ]
+      steps:
+      - task: eliostruyf.build-task.custom-build-task.file-creator@6
+        displayName: 'File Creator'
+        inputs:
+          filepath: '$(Build.ArtifactStagingDirectory)/acrconnect-installer-cli-$(div)[linux-x64].sh'
+          filecontent: |
+            echo $(div)
 
-            fileoverwrite: true
+          fileoverwrite: true
