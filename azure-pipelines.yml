@@ -15,7 +15,11 @@ stages:
           div=1.0.0.0
           echo "##vso[task.setvariable variable=div;isOutput=true]$div"
         name: test 
-    - script: echo $(test.div)
+    - task: CmdLine@2
+      displayName: 'Get version info'
+      inputs:
+        script: |
+          echo $(test.div)
       
   - job: build_2
     dependsOn: build
