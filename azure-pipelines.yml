@@ -1,25 +1,22 @@
 trigger:
 - master
 
-pool: 
-  name: Azure Pipelines
-  vmImage: ubuntu-18.04
-
 stages:
 - stage: BuildStg
   jobs:
   - job: build
+    pool:
+      vmImage: 'ubuntu-18.04'
     steps:
-    - script: |
-        echo "##vso[task.setvariable variable=aiv;isOutput=true]1.0.0"
+    - script: echo "##vso[task.setvariable variable=aiv;isOutput=true]1.0.0"
       name: test
-    - script: |
-        echo $(test.aiv)
+    - script: echo $(test.aiv)
       
   - job: build_2
     dependsOn: build
+    pool:
+      vmImage: 'vs2017-win2016'
     variables:
       aiv: $[ dependencies.build.outputs['test.aiv'] ]
     steps:
-    - script: |
-        echo "aiv=$(aiv)"
+    - script: echo "aiv=$(aiv)"
