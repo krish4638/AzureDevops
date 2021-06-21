@@ -1,6 +1,6 @@
 trigger:
 - master
 
-stages:
+extends:
 - template: template.yaml
 - template: template2.yaml
