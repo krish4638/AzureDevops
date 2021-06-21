@@ -7,8 +7,9 @@ stages:
       test: $[ stageDependencies.BuildStg.build.outputs['test.test'] ]
     steps:
     - script: |
-        cp $(Build.Repository.LocalPath)/scripts/test.sh linux-out/acrconnect-installer-cli-$(test)[linux-out].sh
-        sed -i 's/aivversion/$(test)/g' linux-out/acrconnect-installer-cli-$(test)[linux-out].sh
+        cp $(Build.Repository.LocalPath)/scripts/test.sh acrconnect-installer-cli-$(test)[linux-out].sh
+        sed -i 's/aivversion/$(test)/g' acrconnect-installer-cli-$(test)[linux-out].sh
+        
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact'
       inputs:
