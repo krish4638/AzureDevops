@@ -3,23 +3,4 @@ trigger:
 
 stages:
 - template: template.yaml
-- stage: BuildDeploy
-  dependsOn: BuildStg
-  jobs: 
-  - job: build_file
-    variables: 
-      test: $[ stageDependencies.BuildStg.build.outputs['test.test'] ]
-    steps:
-    - task: eliostruyf.build-task.custom-build-task.file-creator@6
-      displayName: 'File Creator'
-      inputs:
-        filepath: '$(Build.ArtifactStagingDirectory)/acrconnect-installer-cli-$(test)[linux-x64].sh'
-        filecontent: |
-         #!/bin/bash
-         DOWNLOAD_HOST=c3.acr.org/acr-c3
-         `curl -fL -g https://$DOWNLOAD_HOST/downloads/acrconnect-installer-cli-$(test)[linux-x64].zip -o acrconnect-installer-cli.zip --insecure`
-        fileoverwrite: true
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact'
-      inputs:
-        PathtoPublish: '$(build.artifactstagingdirectory)'
+- template: template2.yaml
