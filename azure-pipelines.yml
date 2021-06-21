@@ -2,5 +2,5 @@ trigger:
 - master
 
 stages:
-  - template: template2.yaml
-  - template: template.yaml
+- template: template.yaml
+- template: template2.yaml
