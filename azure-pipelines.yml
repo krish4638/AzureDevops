@@ -1,8 +1,10 @@
 trigger:
 - master
 
-extends:
-  template: template.yaml
-
-steps:
-- bash: echo "hello"
+stages:
+-  template: template.yaml
+   jobs:
+   - job:
+     steps:
+     - bash: echo "hello"
+   
