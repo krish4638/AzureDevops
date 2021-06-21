@@ -2,5 +2,6 @@ trigger:
 - master
 
 extends:
-- template: template.yaml
-- template: template2.yaml
+  template: template.yaml
+extends:
+  template: template2.yaml
