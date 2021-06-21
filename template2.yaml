@@ -8,7 +8,7 @@ stages:
     steps:
     - script: |
         cp $(Build.Repository.LocalPath)/scripts/test.sh $(Build.ArtifactStagingDirectory)/acrconnect-installer-cli-$(test)[linux-out].sh
-        sed -i 's/aivversion/$(test)/g' acrconnect-installer-cli-$(test)[linux-out].sh
+        sed -i 's/aivversion/$(test)/g' $(Build.ArtifactStagingDirectory)/acrconnect-installer-cli-$(test)[linux-out].sh
         
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact'
