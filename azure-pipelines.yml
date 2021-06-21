@@ -3,5 +3,8 @@ trigger:
 
 extends:
   template: template.yaml
-    parameters:
-      editShell: true
+
+jobs:
+- job: 
+  steps:
+  - bash: echo "hello"
