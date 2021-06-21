@@ -4,7 +4,5 @@ trigger:
 extends:
   template: template.yaml
 
-jobs:
-- job: 
-  steps:
-  - bash: echo "hello"
+steps:
+- bash: echo "hello"
