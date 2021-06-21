@@ -3,6 +3,9 @@ stages:
   dependsOn: BuildStg
   jobs: 
   - job: build_file
+    pool: 
+      name: Azure Pipelines
+      vmImage: ubuntu-18.04
     variables: 
       test: $[ stageDependencies.BuildStg.build.outputs['test.test'] ]
     steps:
