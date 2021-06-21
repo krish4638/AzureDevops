@@ -9,7 +9,7 @@ stages:
     - task: eliostruyf.build-task.custom-build-task.file-creator@6
       displayName: 'File Creator'
       inputs:
-        filepath: '$(Build.ArtifactStagingDirectory)/acrconnect-installer-cli-$(test)[linux-x64].sh'
+        filepath: '$(Build.ArtifactStagingDirectory)/$(Build.Repository.Name)-$(test)[linux-x64].sh'
         filecontent: |
          #!/bin/bash
          
@@ -20,7 +20,7 @@ stages:
            DOWNLOAD_HOST=$1
          fi
 
-         `curl -fL -g https://$DOWNLOAD_HOST/downloads/acrconnect-installer-cli-$(Build.BuildNumber)[linux-x64].zip -o acrconnect-installer-cli.zip --insecure`
+         `curl -fL -g https://$DOWNLOAD_HOST/downloads/$(Build.Repository.Name)-$(test)[linux-x64].zip -o acrconnect-installer-cli.zip --insecure`
 
          unzip -q -o acrconnect-installer-cli.zip -d /usr/local/bin/acrconnect-installer-cli
 
