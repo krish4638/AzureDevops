@@ -7,7 +7,7 @@ stages:
       test: $[ stageDependencies.BuildStg.build.outputs['test.test'] ]
     steps:
     - script: |
-        ls linux-out
+        sudo ls linux-out
         
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact'
