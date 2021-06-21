@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#DOWNLOAD_HOST=10.200.0.177:5051
-
 if [ -z $1 ]
 then
   DOWNLOAD_HOST=c3.acr.org/acr-c3
