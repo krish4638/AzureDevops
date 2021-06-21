@@ -9,7 +9,7 @@ else
   DOWNLOAD_HOST=$1
 fi
 
-`curl -fL -g https://$DOWNLOAD_HOST/downloads/acrconnect-installer-cli[linux-x64].zip -o acrconnect-installer-cli.zip --insecure`
+`curl -fL -g https://$DOWNLOAD_HOST/downloads/acrconnect-installer-cli-aivversion[linux-x64].zip -o acrconnect-installer-cli.zip --insecure`
 
 unzip -q -o acrconnect-installer-cli.zip -d /usr/local/bin/acrconnect-installer-cli
 
