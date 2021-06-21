@@ -4,4 +4,5 @@ trigger:
 extends:
   template: template.yaml
 
-template: template2.yaml
+stages:
+- template: template2.yaml
