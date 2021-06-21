@@ -3,8 +3,9 @@ trigger:
 
 stages:
 -  template: template.yaml
-   jobs:
-   - job:
-     steps:
-     - bash: echo "hello"
+
+jobs:
+- job:
+  steps:
+  - bash: echo "hello"
    
